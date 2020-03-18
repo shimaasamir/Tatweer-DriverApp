@@ -19,7 +19,6 @@ export class ApiManager {
             }).done();
     };
 
-
     static callForm = (apiURL, method, data, callback) => {
         const baseUrl = 'http://192.168.1.150:6223/api/' + apiURL;
 
