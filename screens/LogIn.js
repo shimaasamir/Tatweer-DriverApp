@@ -70,7 +70,7 @@ export default class LogIn extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', opacity: 10 }}>
+        <View style={styles.loadingOverlay}>
           <Text>Loading...<ActivityIndicator /></Text>
         </View>
       )
@@ -152,4 +152,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30
   },
+  loadingOverlay:
+  {
+    flex: 1, 
+    padding: 20, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width: '100%', 
+    height: '100%',
+    backgroundColor:'#fff', 
+    
+  }
 });
