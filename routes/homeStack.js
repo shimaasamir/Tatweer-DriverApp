@@ -1,21 +1,28 @@
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
-import AllTrips from '../screens//AllTrips/AllTrips';
-import MyTrips from '../screens/MyTrips';
+import AllTrips from '../screens/AllTrips/AllTrips';
+import MyTrips from '../screens/MyTrips/MyTripsUpcoming';
+import PastTrips from '../screens/MyTrips/MyTripsPast';
 import LogIn from '../screens/LogIn';
+import RequestaTrip from '../screens/RequestTrip/RequestaTrip';
+import Join from '../screens/RequestTrip/jointrip';
+import Header from '../shared/header';
+import React from 'react';
+
 
 const screens = {
-    LogIn: {
-        screen: LogIn
-    },
+
     AllTrips: {
         screen: AllTrips
     },
-    MyTrips: {
-        screen: MyTrips
-    }
+    RequestaTrip: {
+        screen: RequestaTrip
+    },
+    Join: {
+        screen: Join
+    },
+
 }
 
 const HomeStack = createStackNavigator(screens);
 
-export default createAppContainer(HomeStack);
+export default HomeStack;

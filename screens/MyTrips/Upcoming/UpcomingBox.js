@@ -2,59 +2,62 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity, FlatList } from 'react-native';
 import UpcomingItem from './UpcomingItem';
 
+const pressHandler = () => {
+    navigation.navigate('AllTrips');
+}
+
+export default class FetchExample extends React.Component {
 
 
-export default function Sandbox({ navigation }) {
 
-    const pressHandler = () => {
-        navigation.navigate('AllTrips');
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: 'ahmed@weelo.com',
+            password: '123456',
+            isLoading: true
+        }
+
+        global.trips = {};
     }
+    componentDidMount() {
 
-    const [trips, setTrips] = useState([
-        {
-            id: '1',
-            date: "JAN 10 - 12:30 PM",
-            pick: "Pickup Location",
-            fresh: "Fresh Market",
-            dest: "Destination Location",
-            home: "My Home"
+        return fetch('http://192.168.1.150:6223/api/Trip/GetAllTrips', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer pLaT6H4j14YT3BRt2eWcBIYkd4sv5WVXg1wZNLZnTV4=',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
 
-        },
-        {
-            id: '2',
-            date: "JAN 10 - 12:30 PM",
-            pick: "Pickup Location",
-            fresh: "Super Playstore Ground",
-            dest: "Destination Location",
-            home: "My Home"
-        },
-        {
-            id: '3',
-            date: "JAN 10 - 12:30 PM",
-            pick: "Pickup Location",
-            fresh: "Fresh Market",
-            dest: "Destination Location",
-            home: "My Home"
-        },
-    ]);
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                console.log('call API2');
+                console.log(responseJson);
+                this.setState({ trips: responseJson.trips });
+                // console.log(this.state.trips)
+                global.trips = responseJson.trips;
+            }).done();
+    };
 
+    render() {
+        return (
+            <View style={styles.container}>
+                <FlatList
+                    keyExtractor={item => item.id}
+                    data={this.state.trips}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={pressHandler} >
+                            <UpcomingItem date={item.date} pick={item.pick} fresh={item.fresh} dest={item.dest} home={item.home} />
+                        </TouchableOpacity>
+                    )}
+                />
 
-    return (
-        <View style={styles.container}>
-            <FlatList
-                keyExtractor={item => item.id}
-                data={trips}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={pressHandler} >
-                        <UpcomingItem date={item.date} pick={global.user.firstName} fresh={item.fresh} dest={item.dest} home={item.home} />
-                    </TouchableOpacity>
-                )}
-            />
-
-        </View>
+            </View>
 
 
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({

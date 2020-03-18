@@ -53,28 +53,13 @@ const pressHandler = () => {
 export default class FetchExample extends React.Component {
 
 
-    componentDidMount() {
-        return fetch('https://reactnative.dev/movies.json')
-            .then((response) => response.json())
-            .then((responseJson) => {
 
-                this.setState({
-                    isLoading: false,
-                    dataSource: responseJson.movies,
-                }, function () {
 
-                });
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
     render() {
         return (
-            <View><Text style={styles.date}>{global.user.firstName}</Text>
+            <View>
+                <Text style={styles.date}>{global.trips.startTime}</Text>
                 <View style={styles.container}>
-
                     <TouchableOpacity  >
                         <View style={styles.box}>
                             <View style={styles.vl}>
@@ -96,7 +81,7 @@ export default class FetchExample extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View >
-            </View>
+            </View >
 
 
         )

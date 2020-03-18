@@ -1,54 +1,118 @@
-import React from 'react';
-import { StyleSheet, Text, KeyboardAvoidingView, View, ImageBackground, TextInput, Button } from 'react-native';
-import PasswordField from 'react-native-password-field';
+import React, { Component } from 'react';
+import { StyleSheet, Alert, KeyboardAvoidingView, View, ImageBackground, TextInput, Button, ActivityIndicator, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Container } from 'native-base';
+import ApiManager from '../shared/ApiManager'
 
-export default function LogIn({ navigation }) {
 
-  const pressHandler = () => {
-    // navigation.navigate('AllTrips');
-    navigation.push('AllTrips');
+export default class LogIn extends Component {
+  static navigationOptions = {
+    drawerIcon: (
+      <Ionicons name="ios-log-out" size={16} color="#3497FD" />
+    )
   }
 
-  return (
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: 'ahmed@weelo.com',
+      password: '123456',
+      isLoading: true
+    }
+    global.token = "";
+    global.user = {};
+  }
+  onChangeText1 = (username) => {
+    this.setState({ username });
+    return;
+  }
+  onChangeText2 = (password) => {
+    this.setState({ password });
+    return;
+  }
 
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../assets/97635_coaster-banner.png')}
-        style={styles.image}>
-      </ImageBackground>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-        <View style={styles.box}>
-          <ImageBackground
-            source={require('../assets/454.jpg')}
-            style={styles.logo2}>
-          </ImageBackground>
+  getLoginAPI = () => {
+    const navigation = this.props.navigation;
+    // console.log('getLoginAPI :: UserName:' + this.state.username);
+    // console.log('getLoginAPI :: Password:' + this.state.password);
 
-          <View>
-            <Text style={styles.text}>Your Email</Text>
-            <TextInput keyboardType="email-address" style={styles.input} />
-            <Text style={styles.text}>Your Password</Text>
-            <TextInput style={styles.input} />
+    if (this.state.username != '' && this.state.password != '') {
 
-          </View>
+      let details = {
+        'username': this.state.username,
+        'password': this.state.password,
+        'grant_type': 4
+      };
 
-          <View style={styles.button} color='white'>
-            <Button color="#fff" title='Sign in to your account' onPress={pressHandler} />
-          </View>
+      ApiManager.callForm('token', 'POST', details, function (response) {
+        if (response.access_token) {
+          global.token = response.access_token;
+          ApiManager.callForm('login', 'POST', details, function (response) {
+            if (response.data) {
+              global.user = response;
+              navigation.navigate('Trips');
+            }
+            else {
+              Alert.alert("Oops.. something went wrong.");
+            }
+          });
+        }
+        else {
+          Alert.alert("Your email or password could be wrong");
+        }
+      });
+    }
+    else {
+      Alert.alert("Please enter your email and password to proceed");
+    }
+  };
+
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', opacity: 10 }}>
+          <Text>Loading...<ActivityIndicator /></Text>
         </View>
-      </KeyboardAvoidingView>
-    </View>
-  );
+      )
+    }
+    return (
+      <Container style={styles.container} >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+          <View style={styles.box}>
+            <ImageBackground
+              source={require('../assets/logo.png')}
+              style={styles.logo2}>
+            </ImageBackground>
+            <View>
+              <TextInput keyboardType="email-address" style={styles.input}
+                value={this.state.username}
+                placeholder="John@email.com" placeholderTextColor='#454F63'
+                returnKeyType="next"
+                onSubmitEditing={() => this.password.focus()}
+                onChangeText={this.onChangeText1}
+              />
+              <TextInput style={styles.input} secureTextEntry={true} placeholder="Password"
+                value={this.state.password}
+                placeholderTextColor='#454F63'
+                returnKeyType="go"
+                ref={(input) => this.password = input}
+                onChangeText={this.onChangeText2}
+              />
+            </View>
+            < View style={styles.button} >
+              <Button color="#fff" title='LOGIN' onPress={this.getLoginAPI.bind()} />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Container>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-
-  },
-  image: {
-    width: 375,
-    height: 250,
 
   },
   box: {
@@ -58,29 +122,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo2: {
-    width: 119,
-    height: 80,
+    width: 250,
+    height: 200,
     margin: 10,
   },
   input: {
-    borderWidth: 1,
-    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: '#505050',
     padding: 8,
     margin: 10,
-    width: 230,
-    marginBottom: 40
+    width: 330,
+    height: 53,
   },
   text: {
-    fontSize: 16,
-    marginRight: 120,
+    fontFamily: 'gibson-semibold',
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 26.5
+
   },
   button: {
-    width: 230,
-    height: 40,
-    backgroundColor: '#de282e',
-    borderRadius: 10
-
-  }
-
-
+    width: 330,
+    height: 53,
+    backgroundColor: '#505050',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30
+  },
 });
