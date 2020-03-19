@@ -58,67 +58,77 @@ export default function Sandbox(props) {
 
 const styles = StyleSheet.create({
     date: {
-        fontFamily: 'gibson-bold',
-        fontSize: 12,
-        color: '#78849E'
+      fontFamily: 'gibson-bold',
+      fontSize: 12,
+      backgroundColor: '#f5f5f5',
+      color: '#78849E',
+      marginLeft: 24,
+      marginTop: 15
     },
     box: {
-        backgroundColor: 'white',
-        width: '100%',
-        marginTop: 20
+      backgroundColor: 'white',
+      width: 343,
+      marginTop: 15,
+      borderRadius: 12
     },
     vl: {
-        marginLeft: 20
+      marginLeft: 0
     },
     gdot: {
-        marginTop: -27
+      marginTop: -27
     },
     dot: {
-        marginLeft: 20,
-        // marginTop: 10,
-        color: '#78849E4B'
+      marginLeft: 20,
+      // marginTop: 10,
+      color: '#78849E',
+      fontSize: 8
+    },
+    hr: {
+      width: 280,
+      height: 1,
+      backgroundColor: '#F4F4F6FD',
+      marginTop: -10,
+      marginBottom: 5,
+      marginLeft: 48
     },
     circle: {
-        marginLeft: 20,
-        marginTop: 7
+      marginLeft: 18,
+      marginTop: 7
     },
     pick: {
-        fontFamily: 'gibson-regular',
-        fontSize: 12,
-        color: '#959DAD',
-        marginLeft: 40,
-        marginTop: -10
+      fontFamily: 'gibson-regular',
+      fontSize: 12,
+      color: '#959DAD',
+      marginLeft: 40,
+      marginTop: -10
     },
-    plus: {
-        marginLeft: 300,
-        marginTop: -10
-    },
+  
     fresh: {
-        fontFamily: 'gibson-semibold',
-        fontSize: 16,
-        color: '#454F63',
-        marginLeft: 40,
-        marginTop: 0
+      fontFamily: 'gibson-bold',
+      fontSize: 16,
+      color: '#454F63',
+      marginLeft: 40,
+      marginTop: 0
     },
     dest: {
-        fontFamily: 'gibson-regular',
-        fontSize: 12,
-        color: '#959DAD',
-        marginLeft: 40,
-        marginTop: -10
+      fontFamily: 'gibson-regular',
+      fontSize: 12,
+      color: '#959DAD',
+      marginLeft: 40,
+      marginTop: -15
     },
     home: {
-        fontFamily: 'gibson-semibold',
-        fontSize: 16,
-        color: '#454F63',
-        marginTop: 0,
-        marginLeft: 40
-
+      fontFamily: 'gibson-bold',
+      fontSize: 16,
+      color: '#454F63',
+      marginTop: 0,
+      marginLeft: 40
+  
     },
     container: {
-        backgroundColor: '#f5f5f5',
-        alignItems: 'center',
-        justifyContent: 'center',
+      backgroundColor: '#f5f5f5',
+  
     },
-
-})
+  
+  
+  })

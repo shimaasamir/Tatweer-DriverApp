@@ -49,7 +49,7 @@ class App extends Component {
 
 const CustomDrawerContentComponent = (props) => (
   <Container>
-    <Header style={{ height: 220, width: "100%", paddingLeft: -5, paddingRight: -5, backgroundColor: 'white' }}>
+    <Header style={{ height: 220, width: "100%", paddingLeft: -5, paddingRight: -5,paddingTop: -5, backgroundColor: 'white' }}>
       <Body>
         <Image
           style={styles.drawerimage}
@@ -58,7 +58,7 @@ const CustomDrawerContentComponent = (props) => (
         <View style={styles.overlay}>
           <Image
             style={styles.profile}
-            source={global.user.picUrl} />
+            source={{uri: global.user.picUrl}} />
           <Text style={styles.name}>{global.user.firstName} {global.user.lastName}</Text>
         </View>
         <View style={styles.redline}></View>
@@ -79,14 +79,15 @@ const MyApp = DrawerNavigator({
   LogOut: {
     screen: LogIn
   },
-  RequestaTrip: {
-    screen: RequestaTrip
-  },
-  Join: {
-    screen: Join
-  },
+  // RequestaTrip: {
+  //   screen: RequestaTrip
+  // },
+  // Join: {
+  //   screen: Join
+  // },
 
 }, {
+  
   initialRouteName: 'LogOut',
   contentComponent: CustomDrawerContentComponent,
   drawerOpenRoute: 'DrawerOpen',
@@ -99,8 +100,9 @@ const MyApp = DrawerNavigator({
 const styles = StyleSheet.create({
   drawerimage: {
     width: "100%",
-    height: "96%",
-    position: "relative"
+    height: "100%",
+    position: "relative",
+    // top: 0
     // marginTop: 10
   },
   overlay: {
@@ -116,7 +118,8 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 12,
     marginLeft: 20,
-    marginTop: 50
+    marginTop: 35,
+    zIndex:99
 
   },
   name: {

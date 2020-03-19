@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
-import { Container, Header, Icon, Left, Tab, TabHeading, Tabs } from 'native-base';
-import { Text, StyleSheet } from 'react-native';
+import { Container, Header, Icon, Left, Tab, TabHeading, Tabs, Content } from 'native-base';
+import { Text, StyleSheet, View, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import Tab1 from '../MyTrips/MyTripsPast';
-import Tab2 from '../MyTrips/MyTripsUpcoming';
-import { useNavigation } from '@react-navigation/native';
+import UpcomingBox from '../MyTrips/Upcoming/UpcomingBox'
+import PastBox from '../MyTrips/Past/PastBox';
+import { PageLoader } from '../../shared/ApiManager';
 
 
-export default class TabsExample extends Component {
+export default class AllTrips extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = { isLoading: false,  refreshing: false };
+    }
+
+    callbackFunction = (isLoading) => {
+        this.setState({ isLoading: isLoading });
+    };
 
     static navigationOptions = {
         drawerIcon: (
             <AntDesign name="calendar" size={16} color="#3497FD" />
         )
     }
+    updateContent() {
+        this.setState({refreshing:true});
+        setTimeout(()=>{
+            this.setState({refreshing:false});
+        },2000);
+    }
+    // goToTripDetails = () => {
+    //     navigation.push('RequestaTrip');
+    // }
 
     render() {
         return (
-
             <Container style={styles.tab}>
                 <Header style={{ backgroundColor: "#fff", borderBottomColor: "#fff" }} >
                     <Left>
@@ -30,16 +47,24 @@ export default class TabsExample extends Component {
                 <Tabs tabBarUnderlineStyle={{ borderBottomWidth: 6, borderBottomColor: '#EE2125', }}>
                     <Tab style={styles.tabs} heading={<TabHeading style={{ backgroundColor: '#FFFFFF' }} activeTextStyle={{ color: '#959DAD', fontWeight: 'normal' }}>
 
+                        <Text style={{ color: '#454F63', fontFamily: 'gibson-bold', fontSize: 13 }}>UPCOMING</Text>
+                    </TabHeading>}>
+                     <Content style={styles.reload} refreshControl={<RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>{this.updateContent()}}/>
+                        }>
+                        </Content>
+                        <PageLoader isLoading={this.state.isLoading}></PageLoader>
+                            <UpcomingBox parentCallback={this.callbackFunction} />
+                       
+                    </Tab>
+                    <Tab style={styles.tabs} heading={<TabHeading style={{ backgroundColor: '#FFFFFF' }} activeTextStyle={{ color: '#959DAD', fontWeight: 'normal' }}>
+
                         <Text style={{ color: '#454F63', fontFamily: 'gibson-bold', fontSize: 13 }}>HISTORY</Text>
                     </TabHeading>}>
-                        <Tab1 />
-                    </Tab>
-                    <Tab
-                        heading={<TabHeading style={{ backgroundColor: '#FFFFFF' }}>
-
-                            <Text style={{ color: '#454F63', fontFamily: 'gibson-bold', fontSize: 13 }}>UPCOMING</Text>
-                        </TabHeading>}>
-                        <Tab2 />
+                        <View style={styles.container}>
+                            <PastBox />
+                        </View>
                     </Tab>
                 </Tabs>
             </Container>
@@ -60,5 +85,6 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         marginTop: 10,
         marginBottom: 10
-    }
+    },
+    reload: {}
 })

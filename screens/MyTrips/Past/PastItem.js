@@ -10,8 +10,11 @@ export default function PastItem(props) {
 
     return (
 
-        <View style={styles.container}>
+        <View>
             <Text style={styles.date}>{props.date}</Text>
+        
+        <View style={styles.container}>
+            
 
             <View style={styles.box}>
                 <View style={styles.vl}>
@@ -34,7 +37,7 @@ export default function PastItem(props) {
             </View>
 
         </View>
-
+        </View>
 
     )
 
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         backgroundColor: '#f5f5f5',
         color: '#78849E',
-        // marginLeft: 16,
+        marginLeft: 24,
         marginTop: 15
     },
     box: {
@@ -113,6 +116,8 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: '#f5f5f5',
+        justifyContent: 'center',
+        alignItems: 'center'
 
     },
 

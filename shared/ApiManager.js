@@ -26,22 +26,23 @@ export class PageLoader extends Component {
     }
 };
 
-
 export class ApiManager {
     static call = (apiURL, method, data, callback) => {
         const baseUrl = 'http://192.168.1.150:6223/api/' + apiURL;
         fetch(baseUrl, {
             method: method,
             headers: {
+                'Accept': 'application/json',
                 'Authorization': 'Bearer ' + global.token,
                 'Content-Type': 'application/json'
             },
-            body: data
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson)
-                callback(responseJson);
-            }).done();
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            return response.json();
+          }).then(function(_data) {
+            console.log(_data)
+            callback(_data);
+        }).done();
     };
 
     static callForm = (apiURL, method, data, callback) => {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     loadingOverlay:
     {
         flex: 1,
-        flexDirection:'row',
+        flexDirection: 'row',
         padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
@@ -82,7 +83,19 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#666666b0',
         position: 'absolute',
-        zIndex: 999,
+        zIndex: 999
+
+    },
+    overlayMsgBox:
+    {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#fff',
+        borderRadius: 5,
+        flexDirection: 'row',
+        padding: 20,
         shadowColor: "#ccc",
         shadowOffset: {
             width: 0,
@@ -90,25 +103,11 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.27,
         shadowRadius: 4.65,
-        
-        elevation: 6,
-
-    },
-    overlayMsgBox:
-    {
-        justifyContent:'center', 
-        alignItems: 'center',
-        backgroundColor:'#fff',
-        borderWidth:1,
-        borderColor:'#fff',
-        borderRadius:5,
-        flexDirection:'row',
-        padding:20,
-        
+        elevation: 6
 
     },
     overlayMsgText:
     {
-       fontSize:20
+        fontSize: 20
     }
 });
