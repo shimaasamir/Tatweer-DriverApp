@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, ActivityIndicator, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export class PageLoader extends Component {
 
@@ -9,11 +10,15 @@ export class PageLoader extends Component {
     }
 
     render() {
-        if (this.props.isLoading=='true') {
+        if (this.props.isLoading) {
             return (
-                < View style={styles.loadingOverlay} >
-                    <Text>Loading...  <ActivityIndicator size="large" color="#0000ff" /></Text>
-                </View >
+                <View style={styles.loadingOverlay}>
+                    <View style={styles.overlayMsgBox} >
+                        <Text style={styles.overlayMsgText}></Text>
+                        <ActivityIndicator style={styles.overlayMsgText} size="large" color="#000" />
+                    </View >
+                </View>
+
             );
         }
         else
@@ -69,12 +74,41 @@ const styles = StyleSheet.create({
     loadingOverlay:
     {
         flex: 1,
+        flexDirection:'row',
         padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: '#666666b0',
+        position: 'absolute',
+        zIndex: 999,
+        shadowColor: "#ccc",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        
+        elevation: 6,
 
+    },
+    overlayMsgBox:
+    {
+        justifyContent:'center', 
+        alignItems: 'center',
+        backgroundColor:'#fff',
+        borderWidth:1,
+        borderColor:'#fff',
+        borderRadius:5,
+        flexDirection:'row',
+        padding:20,
+        
+
+    },
+    overlayMsgText:
+    {
+       fontSize:20
     }
 });

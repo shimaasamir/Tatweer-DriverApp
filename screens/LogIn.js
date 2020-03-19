@@ -3,6 +3,7 @@ import { StyleSheet, Alert, KeyboardAvoidingView, View, ImageBackground, TextInp
 import { Ionicons } from '@expo/vector-icons';
 import { Container } from 'native-base';
 import { ApiManager, PageLoader } from '../shared/ApiManager';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default class LogIn extends Component {
@@ -19,8 +20,6 @@ export default class LogIn extends Component {
       password: '123456'
     }
     global.user = {};
-    PageLoader
-    PageLoader.setState({ isLoading: true });
   }
   onChangeText1 = (username) => {
     this.setState({ username });
@@ -32,6 +31,7 @@ export default class LogIn extends Component {
   }
 
   getLoginAPI = () => {
+    this.setState({ isLoading: true });
     const navigation = this.props.navigation;
     if (this.state.username != '' && this.state.password != '') {
 
@@ -40,14 +40,15 @@ export default class LogIn extends Component {
         'password': this.state.password,
         'grant_type': 4
       };
-
+      let _this = this;
       ApiManager.callForm('token', 'POST', { username: details.username, password: details.password, grant_type: 4 }, function (response) {
         if (response.access_token) {
           global.token = response.access_token;
           ApiManager.callForm('login', 'POST', { username: details.username, password: details.password, grant_type: 4 }, function (response) {
             if (response) {
               global.user = response;
-              // navigation.navigate('Trips');
+              _this.setState({ isLoading: false });
+              navigation.navigate('Trips');
             }
             else {
               Alert.alert("Oops.. something went wrong.");
@@ -67,7 +68,7 @@ export default class LogIn extends Component {
   render() {
     return (
       <Container style={styles.container} >
-        <PageLoader isLoading="false"></PageLoader>
+        <PageLoader isLoading={this.state.isLoading}></PageLoader>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={styles.box}>
             <ImageBackground
@@ -90,9 +91,11 @@ export default class LogIn extends Component {
                 onChangeText={this.onChangeText2}
               />
             </View>
-            < View style={styles.button} >
-              <Button color="#fff" title='LOGIN' onPress={this.getLoginAPI.bind()} />
-            </View>
+            <TouchableOpacity onPress={this.getLoginAPI.bind()}>
+              < View style={styles.button} >
+                <Button color="#fff" title='LOGIN' />
+              </View>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </Container>

@@ -58,7 +58,7 @@ export default class FetchExample extends React.Component {
     render() {
         return (
             <View>
-                <Text style={styles.date}>{global.trips.startTime}</Text>
+                <Text style={styles.date}>{props.tripDate}</Text>
                 <View style={styles.container}>
                     <TouchableOpacity  >
                         <View style={styles.box}>

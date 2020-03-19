@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity, FlatList } from 'react-native';
 import UpcomingItem from './UpcomingItem';
-
+import { ApiManager, PageLoader } from '../../../shared/ApiManager';
 const pressHandler = () => {
     navigation.navigate('AllTrips');
 }
@@ -13,44 +13,34 @@ export default class FetchExample extends React.Component {
 
     constructor(props) {
         super(props);
+        global.trips = {};
         this.state = {
             username: 'ahmed@weelo.com',
             password: '123456',
-            isLoading: true
+            dataSource: global.trips
         }
 
-        global.trips = {};
+
     }
     componentDidMount() {
 
-        return fetch('http://192.168.1.150:6223/api/Trip/GetAllTrips', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer pLaT6H4j14YT3BRt2eWcBIYkd4sv5WVXg1wZNLZnTV4=',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log('call API2');
-                console.log(responseJson);
-                
-                // console.log(this.state.trips)
-                global.trips = responseJson;
-            }).done();
-    };
+        return ApiManager.call('Trip/GetAllTrips', 'GET', null, function (response) {
+            global.trips = response;
+        });
+    }
 
     render() {
         return (
             <View style={styles.container}>
                 <FlatList
                     keyExtractor={item => item.id}
-                    data={global.trips}
+                    data={this.state.dataSource}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={pressHandler} >
-                            <UpcomingItem date={item.tripDate} pick={item.tripDate} fresh={item.fresh} dest={item.dest} home={item.home} />
-                        </TouchableOpacity>
+
+                        <UpcomingItem tripDate={item.tripDate} pick={item.tripDate} fresh={item.fresh} dest={item.dest} home={item.home} />
+
                     )}
+                    keyExtractor={({ id }, index) => id}
                 />
 
             </View>
@@ -59,6 +49,7 @@ export default class FetchExample extends React.Component {
         )
     }
 }
+
 
 const styles = StyleSheet.create({
     date: {
