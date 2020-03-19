@@ -27,7 +27,7 @@ export default class AllTrips extends Component {
         this.setState({refreshing:true});
         setTimeout(()=>{
             this.setState({refreshing:false});
-        },2000);
+        },1000);
     }
     // goToTripDetails = () => {
     //     navigation.push('RequestaTrip');
@@ -62,9 +62,14 @@ export default class AllTrips extends Component {
 
                         <Text style={{ color: '#454F63', fontFamily: 'gibson-bold', fontSize: 13 }}>HISTORY</Text>
                     </TabHeading>}>
-                        <View style={styles.container}>
+                    <Content style={styles.reload} refreshControl={<RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>{this.updateContent()}}/>
+                        }>
+                        </Content>
+                        
                             <PastBox />
-                        </View>
+                        
                     </Tab>
                 </Tabs>
             </Container>
