@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Alert, KeyboardAvoidingView, View, ImageBackground, TextInput, Button, ActivityIndicator, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Container } from 'native-base';
-import ApiManager from '../shared/ApiManager'
+import { ApiManager, PageLoader } from '../shared/ApiManager';
 
 
 export default class LogIn extends Component {
@@ -16,11 +16,11 @@ export default class LogIn extends Component {
     super(props);
     this.state = {
       username: 'ahmed@weelo.com',
-      password: '123456',
-      isLoading: true
+      password: '123456'
     }
-    global.token = "";
     global.user = {};
+    PageLoader
+    PageLoader.setState({ isLoading: true });
   }
   onChangeText1 = (username) => {
     this.setState({ username });
@@ -33,9 +33,6 @@ export default class LogIn extends Component {
 
   getLoginAPI = () => {
     const navigation = this.props.navigation;
-    // console.log('getLoginAPI :: UserName:' + this.state.username);
-    // console.log('getLoginAPI :: Password:' + this.state.password);
-
     if (this.state.username != '' && this.state.password != '') {
 
       let details = {
@@ -44,13 +41,13 @@ export default class LogIn extends Component {
         'grant_type': 4
       };
 
-      ApiManager.callForm('token', 'POST', details, function (response) {
+      ApiManager.callForm('token', 'POST', { username: details.username, password: details.password, grant_type: 4 }, function (response) {
         if (response.access_token) {
           global.token = response.access_token;
-          ApiManager.callForm('login', 'POST', details, function (response) {
-            if (response.data) {
+          ApiManager.callForm('login', 'POST', { username: details.username, password: details.password, grant_type: 4 }, function (response) {
+            if (response) {
               global.user = response;
-              navigation.navigate('Trips');
+              // navigation.navigate('Trips');
             }
             else {
               Alert.alert("Oops.. something went wrong.");
@@ -68,15 +65,9 @@ export default class LogIn extends Component {
   };
 
   render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.loadingOverlay}>
-          <Text>Loading...<ActivityIndicator /></Text>
-        </View>
-      )
-    }
     return (
       <Container style={styles.container} >
+        <PageLoader isLoading="false"></PageLoader>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={styles.box}>
             <ImageBackground
@@ -154,13 +145,13 @@ const styles = StyleSheet.create({
   },
   loadingOverlay:
   {
-    flex: 1, 
-    padding: 20, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    width: '100%', 
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     height: '100%',
-    backgroundColor:'#fff', 
-    
+    backgroundColor: '#fff',
+
   }
 });

@@ -64,7 +64,7 @@ export default class FetchExample extends React.Component {
                         <View style={styles.box}>
                             <View style={styles.vl}>
                                 <FontAwesome style={styles.circle} name="circle" size={8} color="#78849E" />
-                                <Text style={styles.pick} >{global.user.firstName}</Text>
+                                <Text style={styles.pick} >{global.trips.startTime}</Text>
                                 <Text style={styles.fresh}>{global.user.firstName}</Text>
                                 <View style={styles.gdot}>
                                     <Text style={styles.dot}>.</Text>

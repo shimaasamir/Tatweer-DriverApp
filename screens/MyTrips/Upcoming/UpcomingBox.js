@@ -34,9 +34,9 @@ export default class FetchExample extends React.Component {
             .then((responseJson) => {
                 console.log('call API2');
                 console.log(responseJson);
-                this.setState({ trips: responseJson.trips });
+                
                 // console.log(this.state.trips)
-                global.trips = responseJson.trips;
+                global.trips = responseJson;
             }).done();
     };
 
@@ -45,10 +45,10 @@ export default class FetchExample extends React.Component {
             <View style={styles.container}>
                 <FlatList
                     keyExtractor={item => item.id}
-                    data={this.state.trips}
+                    data={global.trips}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={pressHandler} >
-                            <UpcomingItem date={item.date} pick={item.pick} fresh={item.fresh} dest={item.dest} home={item.home} />
+                            <UpcomingItem date={item.tripDate} pick={item.tripDate} fresh={item.fresh} dest={item.dest} home={item.home} />
                         </TouchableOpacity>
                     )}
                 />
